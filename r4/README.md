@@ -23,3 +23,9 @@ python scripts/score_onnx.py r4/r4_clips.json FP32.onnx INT8.onnx ours.json --au
 python scripts/make_audio_npz.py r4/r4_clips.json r4.npz --audio-dir <data>/r4_audio   # input of the incumbent rescore (lab R2 rescore.py run)
 python scripts/gate_r4.py r4/r4_clips.json incumbent.json ours.json gate.json
 ```
+
+## Build-time evidence (spent set, not the R4 clips)
+`scripts/parity.py` on the R2 screen600 (already read in R2): fp32 ONNX vs R2 torch predictions max |age diff| 0.055 yr, max |logit diff| 0.016,
+gender argmax agreement 1.0; int8 vs fp32: gender accuracy 0.9467 -> 0.9450 (-0.17 pp), age MAE 10.383 -> 10.472 yr (+0.089 yr),
+gender argmax agreement 0.995 (`int8_parity_screen600_spent_set.json`). The int8 recipe was chosen on this set (see `age_gender_audio/export.py` docstring).
+Export environment: torch 2.6.0+cpu, transformers 5.5.4, onnx 1.23.2, onnxruntime 1.32.0 (venv a local venv). fp32 ONNX sha256 d9d7d004142f9f0900d55e78a9e7e16495ab5f3a2c82a120c4c277692888afc8 (378,448,513 B, reproduced bit-identical on a second export); int8 sha256 71436e545d79771b386004d2932290a410f77e1f4efca2edc118e3cc079965df (209,118,507 B).

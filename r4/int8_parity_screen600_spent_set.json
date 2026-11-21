@@ -1,0 +1,20 @@
+{
+ "n": 600,
+ "set": "R2 screen600 (already spent; not the R4 clips)",
+ "fp32_vs_r2torch": {
+  "max_abs_age_diff_yr": 0.05466938018798828,
+  "max_abs_logit_diff": 0.016076087951660156,
+  "gender_argmax_agree": 1.0
+ },
+ "int8_vs_fp32": {
+  "gender_acc_fp32": 0.9466666666666667,
+  "gender_acc_int8": 0.945,
+  "gender_acc_delta_pp": -0.16666666666667052,
+  "gender_argmax_agree": 0.995,
+  "age_mae_fp32": 10.383101528386275,
+  "age_mae_int8": 10.472393247981866,
+  "age_mae_delta_yr": 0.08929171959559135,
+  "max_abs_age_diff_yr": 7.06106424331665,
+  "mean_abs_age_diff_yr": 1.142400657137235
+ }
+}
