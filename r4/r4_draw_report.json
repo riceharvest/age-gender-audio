@@ -1,0 +1,30 @@
+{
+ "seed": 20261124,
+ "n": 1200,
+ "speakers": 1200,
+ "max_clips_per_speaker": 1,
+ "clips_per_speaker_K": 1,
+ "cell_cap_C": 393,
+ "pool_clips": 75902,
+ "pool_speakers": 1233,
+ "shards": "en-train-0000..en-train-0089",
+ "n_shards": 90,
+ "overlap_with_train": 0,
+ "overlap_with_screen": 0,
+ "sha256_r4_clips_json": "90d1c69b0405fb75bb15916362cb7e914d360b6775502cd00e848a392967fe07",
+ "by_bucket": {
+  "15": 171,
+  "25": 499,
+  "35": 236,
+  "45": 149,
+  "55": 76,
+  "65": 47,
+  "75": 19,
+  "85": 3
+ },
+ "by_gender": {
+  "male": 917,
+  "female": 283
+ },
+ "hash_rule": "int(sha256('agr2:'+client_id)[:8],16)%10 == 1"
+}
