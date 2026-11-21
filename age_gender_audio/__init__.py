@@ -1,12 +1,11 @@
-"""age-gender-audio — one line: what it does."""
+"""age-gender-audio: age and gender from speech, wav2vec2-base heads, int8 ONNX, drop-in output shape."""
 
 __version__ = "0.1.0"
 
 
-def greet(name: str) -> str:
-    """Skeleton function: replace with the real product logic.
+def __getattr__(name):  # lazy: importing the package must not import onnxruntime
+    if name == "AgeGenderModel":
+        from .model import AgeGenderModel
 
-    Keep the contract stable once shipped: any change to an existing API's
-    output is a major/minor decision (see CHANGELOG.md).
-    """
-    return f"hello, {name}!"
+        return AgeGenderModel
+    raise AttributeError(name)

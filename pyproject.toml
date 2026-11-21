@@ -5,14 +5,21 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "age-gender-audio"
 version = "0.1.0"
-description = "One line: what it does and the existing slot it drops into."
+description = "Age and gender from speech: wav2vec2-base heads, int8 ONNX, same output shape as audeering/wav2vec2-large-robust-24-ft-age-gender."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["numpy", "onnxruntime", "soundfile", "scipy"]
+
+[project.optional-dependencies]
+export = ["torch", "transformers", "onnx"]
+test = ["pytest", "onnx", "pyarrow"]
 
 [project.scripts]
 "age-gender-audio" = "age_gender_audio.cli:main"
 
 [tool.setuptools]
 packages = ["age_gender_audio"]
+
+[tool.setuptools.package-data]
+age_gender_audio = ["data/*.npz"]
