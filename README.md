@@ -2,6 +2,12 @@
 
 Age and gender from speech with permissively licensed weights: a frozen `facebook/wav2vec2-base` backbone with trained age and gender heads, shipped as an int8 ONNX model. It returns the same output shape as `audeering/wav2vec2-large-robust-24-ft-age-gender` (embedding, age 0..1, gender probabilities [female, male, child]), so it can stand in where that checkpoint is loaded. The `child` probability is **not predicted** (no permissive child-speech corpus; the entry exists only for shape compatibility).
 
+![Held-out Common Voice 17 English, n=1,200 speakers: int8 ONNX minus the audeering checkpoint, gender accuracy +0.92 pp [-0.17, +2.00], age MAE -0.55 yr [-1.10, +0.02]: level with it, not claimed to beat it](https://raw.githubusercontent.com/riceharvest/age-gender-audio/main/docs/hero-r4.png)
+
+*Hero: paired difference on the held-out set (source: [`r4/result.md`](https://github.com/riceharvest/age-gender-audio/blob/main/r4/result.md)). Both intervals reach zero: the wording is "level with", never "beats". Losses and what is not measured are in [Results](#results-scoped-010).*
+
+![A real run on three Common Voice clips with the int8 ONNX file, on a CPU](https://raw.githubusercontent.com/riceharvest/age-gender-audio/main/docs/demo-010.gif)
+
 ## Install
 
     pip install https://github.com/riceharvest/age-gender-audio/releases/download/v0.1.0/age_gender_audio-0.1.0-py3-none-any.whl
@@ -44,6 +50,19 @@ Losses on this set: ours was nominally behind the incumbent on both arms (gender
 **int8 vs fp32 build evidence (dev-set, spent R2 screen n=600, [`r4/README.md`](https://github.com/riceharvest/age-gender-audio/blob/main/r4/README.md)).** Gender accuracy 0.9467 -> 0.9450 (-0.17 pp), age MAE 10.383 -> 10.472 yr (+0.089 yr). int8 quantizes only the 60 transformer-layer weight matmuls; the model file is 209,118,507 B (fp32 378,448,513 B).
 
 **Not measured:** other languages, children, noisy or telephone audio, speakers outside CV17-en, non-binary gender, CPU latency. No claim is made for them.
+
+## Licences
+
+| | code | backbone | trained on | NC clause |
+|---|---|---|---|---|
+| age-gender-audio (this repo) | MIT | `facebook/wav2vec2-base`, Apache-2.0 | Common Voice 17 English, CC0 | none |
+| `audeering/wav2vec2-large-robust-24-ft-age-gender` | n/a | `facebook/wav2vec2-large-robust` | agender, Common Voice, TIMIT, VoxCeleb2 (per its card) | CC-BY-NC-SA-4.0 (HF API licence field, read 2026-11-21) |
+
+This is the reason the repo exists: the audeering checkpoint is the one most people pull (2,348,522 downloads in the 30 days to 2026-11-21 per the HF API) and its licence is non-commercial. This table is not legal advice; read the licence texts for your case.
+
+## Intended use and privacy
+
+Age and gender inferred from a voice are personal data. Intended use: self-hosted or on-device call analytics and dataset annotation, with the consent and notice your jurisdiction requires. Not for: surveillance, identity verification, hiring, insurance or credit decisions, or any use on children (the model has no child class and was not trained on or tested with children). The output is an estimate, not a fact about a person: age is regressed against self-reported decade buckets, gender is the 2-way female/male label in Common Voice. Nothing in this repo sends audio anywhere; inference is a local ONNX file.
 
 ## Claims rules (honest numbers — keep this section)
 
