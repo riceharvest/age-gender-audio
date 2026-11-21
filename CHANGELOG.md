@@ -6,6 +6,10 @@ Any change to an existing API's output is a major/minor decision (lab policy: de
 
 ## [Unreleased]
 
+### Fixed
+- `export` extra pins `transformers>=4.57,<5` (5.x crashes the wav2vec2 export with an attention IndexError) and `export_fp32` fails fast with `export needs transformers >=4.57,<5, found <ver>`. Tested: transformers 4.57.6, torch 2.15.0, onnx 1.23.2, onnxruntime 1.32.0.
+- Documented export sha re-recorded from that environment: fp32 `3a28b86f...1bc4` (was `d9d7d004...` from transformers 5.5.4, not reproducible); int8 `71436e54...65df` unchanged. Model outputs and heads unchanged.
+
 ## [0.1.0] - 2026-11-21
 
 ### Added

@@ -18,7 +18,7 @@ Not on PyPI yet; install from the GitHub release.
 
     age-gender-audio FILE.wav [FILE2.wav ...] --model PATH/model_int8.onnx    # or set AGE_GENDER_AUDIO_ONNX
 
-One JSON line per file: `{"file", "age_years", "gender", "gender_probs"}`. The ONNX files are built with `python -m age_gender_audio.export OUTDIR` (see the [R4 README](https://github.com/riceharvest/age-gender-audio/blob/main/r4/README.md)). Python: `from age_gender_audio import AgeGenderModel`.
+One JSON line per file: `{"file", "age_years", "gender", "gender_probs"}`. The ONNX files are built with `pip install 'age-gender-audio[export]'` then `python -m age_gender_audio.export OUTDIR` (tested with transformers 4.57.6, torch 2.15.0, onnx 1.23.2, onnxruntime 1.32.0; the extra pins `transformers>=4.57,<5` and the export fails fast outside it; see the [R4 README](https://github.com/riceharvest/age-gender-audio/blob/main/r4/README.md)). Python: `from age_gender_audio import AgeGenderModel`.
 
 ## Results, scoped (0.1.0)
 

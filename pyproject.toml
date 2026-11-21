@@ -12,7 +12,7 @@ requires-python = ">=3.10"
 dependencies = ["numpy", "onnxruntime", "soundfile", "scipy"]
 
 [project.optional-dependencies]
-export = ["torch", "transformers", "onnx"]
+export = ["torch", "transformers>=4.57,<5", "onnx"]
 test = ["pytest", "onnx", "pyarrow"]
 
 [project.scripts]

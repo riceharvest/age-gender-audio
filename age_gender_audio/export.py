@@ -1,6 +1,6 @@
 """Build the ONNX files: fp32 graph (frozen wav2vec2-base + trained heads) and the int8 transformer-only graph.
 
-Needs the `export` extra: torch, transformers, onnx, onnxruntime. The backbone is fetched from the Hub by id
+Needs the `export` extra: torch, transformers (>=4.57,<5, asserted in export_fp32), onnx, onnxruntime. The backbone is fetched from the Hub by id
 (facebook/wav2vec2-base, Apache-2.0); nothing from the incumbent is used.
 
 Int8 rule (lab METHODOLOGY 3b.9, dive s8): wav2vec2 collapses if the CNN front end is quantized, so ONLY the
@@ -28,6 +28,24 @@ N_LAYERS = 12
 QUANT_PER_LAYER = 5  # q_proj, k_proj, v_proj, out_proj, fc1 (fc2 stays fp32, see module doc)
 EXPECTED_MATMULINTEGER = N_LAYERS * QUANT_PER_LAYER
 OPSET = 17
+TRANSFORMERS_RANGE = ">=4.57,<5"  # same bound as the `export` extra in pyproject.toml; 5.x cannot export wav2vec2 (attention IndexError)
+
+
+def _parse_ver(v: str) -> tuple[int, int]:
+    m = re.match(r"(\d+)\.(\d+)", v)
+    if not m:
+        raise AssertionError(f"export needs transformers {TRANSFORMERS_RANGE}, found unparseable version {v!r}")
+    return int(m.group(1)), int(m.group(2))
+
+
+def assert_transformers_version(found: str | None = None) -> str:
+    """Fail fast (one line) unless the installed transformers is inside TRANSFORMERS_RANGE."""
+    if found is None:
+        import transformers
+        found = transformers.__version__
+    if not ((4, 57) <= _parse_ver(found) < (5, 0)):
+        raise AssertionError(f"export needs transformers {TRANSFORMERS_RANGE}, found {found}")
+    return found
 
 
 def build_torch_module(head_path: str = heads.HEAD_FILE, backbone: str = BACKBONE):
@@ -75,6 +93,7 @@ def build_torch_module(head_path: str = heads.HEAD_FILE, backbone: str = BACKBON
 def export_fp32(out_path: str, head_path: str = heads.HEAD_FILE, backbone: str = BACKBONE) -> str:
     import torch
 
+    assert_transformers_version()
     net = build_torch_module(head_path, backbone)
     x = torch.randn(1, 32000)
     with torch.no_grad():

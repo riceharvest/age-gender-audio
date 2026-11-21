@@ -58,3 +58,17 @@ def test_layer_regex_skips_activation_matmuls_and_heads():
     assert not r.match("/layers.11/feed_forward/output_dense/MatMul")  # fc2 stays fp32
     assert not r.match("/layers.0/attention/MatMul") and not r.match("/layers.0/attention/MatMul_1")
     assert not r.match("/trunk/Gemm")
+
+
+def test_transformers_version_guard_rejects_5x(monkeypatch):
+    transformers = pytest.importorskip("transformers")
+    monkeypatch.setattr(transformers, "__version__", "5.24.0")
+    with pytest.raises(AssertionError, match=r"^export needs transformers >=4\.57,<5, found 5\.24\.0$"):
+        export.assert_transformers_version()
+
+
+def test_transformers_version_guard_accepts_pinned_range():
+    for v in ("4.57.6", "4.99.1"):
+        assert export.assert_transformers_version(v) == v
+    with pytest.raises(AssertionError, match="found 4.56.2"):
+        export.assert_transformers_version("4.56.2")
