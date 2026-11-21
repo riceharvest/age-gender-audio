@@ -1,0 +1,61 @@
+{
+ "n": 1200,
+ "seed": 20261124,
+ "boot": 2000,
+ "arm": "int8",
+ "list_sha256": "90d1c69b0405fb75bb15916362cb7e914d360b6775502cd00e848a392967fe07",
+ "incumbent": {
+  "gender_acc_2way": 0.9491666666666667,
+  "age_mae": 9.741265933960676,
+  "top_class_child": 10
+ },
+ "controls": {
+  "majority_gender_acc": 0.7641666666666667,
+  "mean_age_mae": 11.150555555555554
+ },
+ "arms": {
+  "fp32": {
+   "gender_acc": 0.96,
+   "age_mae": 9.176675786077976,
+   "child_top_class": 0,
+   "gender_diff_pp": 1.0833333333333333,
+   "gender_ci": [
+    0.0,
+    2.1666666666666665
+   ],
+   "age_diff_yr": -0.5645901478827,
+   "age_ci": [
+    -1.1125912855193019,
+    0.01816386262575729
+   ],
+   "gender_ok": true,
+   "age_ok": true,
+   "discordant_pct": 3.75
+  },
+  "int8": {
+   "gender_acc": 0.9583333333333334,
+   "age_mae": 9.191587657729785,
+   "child_top_class": 0,
+   "gender_diff_pp": 0.9166666666666666,
+   "gender_ci": [
+    -0.16666666666666666,
+    2.002083333333322
+   ],
+   "age_diff_yr": -0.5496782762308915,
+   "age_ci": [
+    -1.0957864126780381,
+    0.023642126483221244
+   ],
+   "gender_ok": true,
+   "age_ok": true,
+   "discordant_pct": 3.916666666666667
+  }
+ },
+ "gate_ci_pass": true,
+ "parity": {
+  "gender_acc_delta_pp": -0.1666666666666594,
+  "age_mae_delta_yr": 0.01491187165180996,
+  "ok": true
+ },
+ "gate_pass": true
+}
