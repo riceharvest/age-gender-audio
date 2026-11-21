@@ -1,42 +1,74 @@
 {
-  "purpose": "age-gender-audio 0.1.0 release freeze (freeze card). Pins the exact tree that ships as 0.1.0 BEFORE any held-out number for this release is read (METHODOLOGY 4).",
-  "frozen_at": "2026-11-21T19:29:45+01:00",
+  "purpose": "age-gender-audio 0.1.0 release freeze v2 (freeze card). Supersedes v1 (card [internal id], code 9927071), which had no model code. Pins the exact code, head, ONNX artifacts and R4 release-gate list BEFORE any R4 number is read (METHODOLOGY 4).",
   "version": "0.1.0",
-  "previous_version": "0.0.0",
+  "freeze_version": 2,
+  "previous_version": "0.1.0 freeze v1 (superseded, code 9927071, no model code)",
+  "frozen_at": "2026-11-21",
   "code": {
     "repo": "<repo>",
     "branch": "main",
-    "git_commit": "992707143e90a6826f6eec62acc1b34bf5adb075",
-    "git_commit_short": "9927071",
-    "git_commit_note": "last content commit before the freeze (hook proof); the freeze commit F that adds frozen_config.json lands directly on top of it and changes metadata only -- no src/, tests/, hooks/ or packaging file. The shipped-code tree is this commit.",
-    "git_tree": "172e84497f771a9ccbf442a2e95afbfecce327fe",
-    "commits": [
-      "9927071 hook proof",
-      "eed1baf age-gender-audio 0.1.0 scaffold: MIT licence, CI test workflow, hygiene hooks, honest-claims README"
-    ],
-    "remote": "none yet: public_repo is empty in the lab project file; the GitHub repo is created at the publish card, which pushes this pinned commit",
-    "clean_tree": "git status --short in the repo -> 0 lines at freeze time (19:29); __pycache__/, .pytest_cache/, *.pyc covered by .gitignore",
-    "tests_at_freeze": "python3 -m pytest -q -> 4 passed in 0.08s (CPU, this card)",
-    "version_fields_verified": "pyproject.toml project.version = 0.1.0 (tomllib). CHANGELOG.md: '## [0.1.0] - TBD' entry exists; the TBD date is filled by the docs card [internal id] and that is a docs-file change, allowed pre-holdout only if made before any held-out number; a src/ change after this freeze needs a NEW freeze card.",
-    "no_heldout_read_yet": "Verified 2026-11-21 19:26 on the task board: gates [internal id] and every card after it are state=waiting, and this freeze card is the first run in the 0.1.0 chain -- no held-out number for this release has been read."
+    "git_commit": "f9d1cd1bb1e7cab228948f72c0e4c4ca77877939",
+    "git_commit_short": "f9d1cd1",
+    "git_tree": "a9a785108315607728ebc0f1b700208bc299f518",
+    "source_branch": "a feature branch (fast-forwarded into main, local only; no remote)",
+    "freeze_commit_note": "the freeze commit F that adds this file lands on top of f9d1cd1 and changes frozen_config.json only (metadata). Its own hash is recorded on card [internal id] and on gates [internal id], not inside this file.",
+    "clean_tree": "git status --short -> 0 lines before this file was written",
+    "tests_at_freeze": "python -m pytest -q (venv a local venv) -> 18 passed in 7.12s, CPU"
+  },
+  "head": {
+    "name": "R2 seed 0 heads",
+    "file": "age_gender_audio/data/head.npz",
+    "sha256": "5bf3380631ee96c5ff53dff656874dd199f8bcd52846ec460b8aa056d636cc5a",
+    "derived_from": "R2 head_seed0.pt sha256 cfb79ff2956c0b0639c4a0a1bacc99997a1d8447d00afe3acea82ddcb5923afb",
+    "seed_fixed": "seed 0 fixed by the build card before any R4 number; not chosen on R4"
+  },
+  "onnx": {
+    "fp32": {
+      "path": "<data>/onnx/age_gender_fp32.onnx",
+      "sha256": "d9d7d004142f9f0900d55e78a9e7e16495ab5f3a2c82a120c4c277692888afc8",
+      "bytes": 378448513
+    },
+    "int8": {
+      "path": "<data>/onnx/age_gender_int8.onnx",
+      "sha256": "71436e545d79771b386004d2932290a410f77e1f4efca2edc118e3cc079965df",
+      "bytes": 209118507,
+      "recipe": "uint8 per-channel dynamic quantization of 60 transformer-layer matmuls; conv front end, fc2 and heads stay fp32"
+    },
+    "export_env": {
+      "torch": "2.6.0+cpu",
+      "transformers": "5.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.32.0"
+    },
+    "export_command": "python -m age_gender_audio.export OUTDIR"
+  },
+  "r4_gate_set": {
+    "list": "r4/r4_clips.json",
+    "list_sha256": "90d1c69b0405fb75bb15916362cb7e914d360b6775502cd00e848a392967fe07",
+    "sha256_file": "r4/r4_clips.sha256",
+    "n": 1200,
+    "distinct_client_id": 1200,
+    "hash_reserved_speakers": "int(sha256('agr2:'+client_id)[:8],16) % 10 == 1",
+    "overlap_with_r2_train": 0,
+    "overlap_with_r2_screen": 0,
+    "seed": 20261124,
+    "audio_dir": "<data>/r4_audio (NNNN.mp3, row order; all 1200 per-clip sha256 match the list's audio_sha256, verified at freeze)",
+    "draw_report": "r4/r4_draw_report.json"
   },
   "flags": {
-    "held_out_set": "R4 release gate: n=1200 Common Voice 17 English clips, speaker-disjoint via client_id, drawn ONLY after excluding every dev/val client_id (assert zero overlap and print the count); clip list hashed (sha256) onto the R4 card and frozen before the first number; bootstrap resampling seed fixed in advance. Dive research/dive/age-gender-audio.md s8.",
+    "held_out_set": "R4 release gate: n=1200 Common Voice 17 English clips, one per client_id, speaker-disjoint from R2 train and screen; list hashed and frozen before the first number.",
     "scoring_rules_pinned": [
-      "Gender accuracy = argmax over the {female, male} logits only; the child logit is ignored for BOTH our model and the incumbent, so no arm is penalised for predicting child; report alongside the count of clips where the incumbent's top class would have been child.",
-      "Age = MAE against decade-bucket midpoints (the model trains on CV decade-bucket targets; floor ~2.5 yr MAE).",
-      "Both margins are RELATIVE to the incumbent (audeering/wav2vec2-large-robust-24-ft-age-gender) re-scored on the exact same frozen clips -- never absolute thresholds copied from the R1 census (dive s8 gate form, review E3).",
-      "Decision uses the CI BOUND, not the point estimate: 2000 paired-bootstrap resamples over clips, fixed seed."
+      "Gender accuracy = argmax over the {female, male} logits only; the child logit is ignored for BOTH arms.",
+      "Age = MAE against decade-bucket midpoints.",
+      "Margins are RELATIVE to the incumbent audeering/wav2vec2-large-robust-24-ft-age-gender re-scored on the same frozen clips, first 10 s input as in R2.",
+      "Ours = int8 ONNX (shipped artifact); fp32 reported beside it.",
+      "Paired bootstrap over clips (clip == speaker), B=2000, seed 20261124. Decision uses the CI BOUND."
     ],
-    "r4_release_gate": "ship 0.1.0 only if BOTH: lower 95% bound of (ours - incumbent) gender accuracy >= -2.0 pp AND upper 95% bound of (ours - incumbent) age MAE <= +1.0 yr, on the frozen n=1200 set; AND int8-ONNX-vs-fp32 parity within 0.5 pp gender / 0.3 yr age. Else close the line -- no rescue variant, no re-tune-and-rerun.",
-    "r2_screen_gate": "screen (n=600, both seeds, same CI-bound rule): continue only if gender bound >= -3.0 pp and age bound <= +1.5 yr; if R2 misses on both seeds, run ONE layer-weighted-sum probe (<=30 GPU-min) before closing (dive s8).",
-    "models": "No model id is pinned here (METHODOLOGY 4b): roles/slots resolve from the lab model roster at each run's start and the roster date + picked ids go into that run's result. The incumbent audeering/wav2vec2-large-robust-24-ft-age-gender is the product's drop-in definition, not a roster pick. Roster in effect at freeze: the lab model roster mtime 2026-11-21 17:08. No teacher model (CV labels are task-native self-reported).",
-    "claim_wording": "'level with' only -- the gate is a non-inferiority margin; 'beats'/'better' are not allowed and CI bounds must be reported (dive C4). Age claims always say decade-bucket resolution (C2); child logit documented as 'not predicted' plus the measured incumbent child-prediction rate (C1); intended-use/privacy section on model card + repo front page (C3)."
+    "r4_release_gate": "PASS only if ALL: lower 95% bound of (ours - incumbent) gender accuracy >= -2.0 pp; upper 95% bound of (ours - incumbent) age MAE <= +1.0 yr; int8-vs-fp32 parity |d acc| <= 0.5 pp and |d MAE| <= 0.3 yr on the R4 clips. Else close the line -- no rescue variant, no re-tune-and-rerun.",
+    "gate_script": "scripts/gate_r4.py",
+    "gate_recipe": "score_onnx.py (ours), make_audio_npz.py + lab R2 rescore.py (incumbent, Intel XPU), gate_r4.py -- see r4/README.md",
+    "claim_wording": "'level with' only (non-inferiority); report CI bounds; age at decade-bucket resolution; child logit 'not predicted'."
   },
-  "budget_rule": {
-    "freeze_card": "<= 30 agent-minutes, $0, CPU only (this card).",
-    "downstream_chain": "gates/probe/docs/hygiene/artifacts/publish carry their own budgets from the release chain; the R4 held-out gate is touched ONCE, <=1 GPU-h local (3060/Intel XPU via the GPU launcher, per lab-compute), $0, no CloudRift rental, no teacher; full dive ladder <=5.5 GPU-h, $0, inside the per-card caps.",
-    "after_freeze": "No parameter, flag, scoring-rule or gate change is allowed after the first held-out number is seen; any such change means a new held-out draw and a NEW freeze card. A src/ or model-code change after git_commit 9927071 requires a new freeze card before gates."
-  },
-  "out_of_scope": "Any code change after this freeze (a new freeze card is needed instead)."
+  "after_freeze": "No code, head, ONNX, list, scoring or gate change is allowed after this freeze. Any change means a NEW freeze card and a new held-out draw.",
+  "out_of_scope": "Any code change after this freeze."
 }
