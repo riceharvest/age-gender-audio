@@ -1,0 +1,1 @@
+# Makes the repo root importable for bare `pytest` runs (CI installs the package with pip install -e .).

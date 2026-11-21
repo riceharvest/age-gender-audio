@@ -1,0 +1,16 @@
+#!/bin/bash
+# commit-msg hook: never credit AI in commits. Strips AI co-author trailers and
+# "generated with" lines from the message before the commit is created.
+# Same logic as the lab's commit-msg-no-ai-credit hook (generic copy for public repos).
+f="$1"
+python3 - "$f" <<'EOF'
+import re, sys
+p = sys.argv[1]
+lines = open(p, encoding="utf-8", errors="replace").read().split("\n")
+pat = re.compile(r"^\s*(co-authored-by:.*(claude|anthropic|openai|codex|chatgpt|gemini|google|copilot|cursor|noreply@anthropic)|"
+                 r".*generated (with|by) .*(claude|codex|gemini|copilot|ai)\b|🤖)", re.I)
+out = [l for l in lines if not pat.search(l)]
+while len(out) > 1 and out[-1].strip() == "" and out[-2].strip() == "":
+    out.pop()
+open(p, "w", encoding="utf-8").write("\n".join(out))
+EOF
