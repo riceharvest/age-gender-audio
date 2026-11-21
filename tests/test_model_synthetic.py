@@ -28,6 +28,7 @@ def _tiny_model(path):
                            helper.make_tensor_value_info("age", TensorProto.FLOAT, [1, 1]),
                            helper.make_tensor_value_info("gender_logits", TensorProto.FLOAT, [1, 3])], inits)
     m = helper.make_model(g, opset_imports=[helper.make_opsetid("", 17)])
+    m.ir_version = 10  # newer onnx writes IR 14; older onnxruntime (py3.10 CI) loads up to IR 11
     onnx.save(m, path)
 
 
