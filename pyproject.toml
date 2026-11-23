@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "age-gender-audio"
-version = "0.1.0"
+version = "0.1.1"
 description = "Age and gender from speech: wav2vec2-base heads, int8 ONNX, same output shape as audeering/wav2vec2-large-robust-24-ft-age-gender."
 readme = "README.md"
 license = "MIT"
