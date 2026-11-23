@@ -10,7 +10,7 @@ Age and gender from speech with permissively licensed weights: a frozen `faceboo
 
 ## Install
 
-    pip install https://github.com/riceharvest/age-gender-audio/releases/download/v0.1.0/age_gender_audio-0.1.0-py3-none-any.whl
+    pip install https://github.com/riceharvest/age-gender-audio/releases/download/v0.1.1/age_gender_audio-0.1.1-py3-none-any.whl
 
 Not on PyPI yet; install from the GitHub release.
 
