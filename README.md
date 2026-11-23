@@ -22,6 +22,8 @@ One JSON line per file: `{"file", "age_years", "gender", "gender_probs"}`. The O
 
 ## Results, scoped (0.1.0)
 
+0.1.1 is a patch: it ships the same int8 file (sha256 `71436e54...65df`, identical to 0.1.0) and the same heads (`5bf33806...cc5a`, unchanged since v0.1.0). The fp32 file was re-exported under a pinned transformers (`3a28b86f...1bc4`); the fp32 row below was measured on the earlier `d9d7d004...` build and has not been re-scored on R4. No new held-out run was made for 0.1.1. Details: [CHANGELOG](https://github.com/riceharvest/age-gender-audio/blob/main/CHANGELOG.md).
+
 Setup for every row: Common Voice 17 English (CC0), one clip per speaker, first 10 s of audio, age scored against the decade-bucket midpoint (so age MAE has a floor from bucket width), gender scored as 2-way female/male. Our heads are trained on Common Voice (in-domain); the incumbent never saw CV-en (out-of-domain). Both sets are stratified, not population draws. "Incumbent" is `audeering/wav2vec2-large-robust-24-ft-age-gender` (CC-BY-NC-SA-4.0).
 
 **Held-out R4 gate (n=1200 speakers, list sha256 `90d1c69b...fe07`, frozen before any model number, paired bootstrap 2000 resamples, seed 20261124).** Source: [`r4/result.md`](https://github.com/riceharvest/age-gender-audio/blob/main/r4/result.md), raw [`r4/gate_r4.json`](https://github.com/riceharvest/age-gender-audio/blob/main/r4/gate_r4.json), reproduce commands in the [R4 README](https://github.com/riceharvest/age-gender-audio/blob/main/r4/README.md).
@@ -47,7 +49,7 @@ Losses on this set: ours was nominally behind the incumbent on both arms (gender
 
 **Incumbent reference census (dev-set R1, n=438 speakers, incumbent only).** Source: lab repo `results/age-gender-audio/r1/result.md`: strict 3-way gender accuracy 97.49%, age MAE 9.87 yr, 6/438 adult clips predicted child. Different clips from the R2/R4 sets, so not comparable with the tables above.
 
-**int8 vs fp32 build evidence (dev-set, spent R2 screen n=600, [`r4/README.md`](https://github.com/riceharvest/age-gender-audio/blob/main/r4/README.md)).** Gender accuracy 0.9467 -> 0.9450 (-0.17 pp), age MAE 10.383 -> 10.472 yr (+0.089 yr). int8 quantizes only the 60 transformer-layer weight matmuls; the model file is 209,118,507 B (fp32 378,448,513 B).
+**int8 vs fp32 build evidence (dev-set, spent R2 screen n=600, [`r4/README.md`](https://github.com/riceharvest/age-gender-audio/blob/main/r4/README.md)).** Gender accuracy 0.9467 -> 0.9450 (-0.17 pp), age MAE 10.383 -> 10.472 yr (+0.089 yr). int8 quantizes only the 60 transformer-layer weight matmuls; the model file is 209,118,507 B (fp32 378,448,513 B for the 0.1.0 build; the 0.1.1 fp32 file is 378,448,514 B).
 
 **Not measured:** other languages, children, noisy or telephone audio, speakers outside CV17-en, non-binary gender, CPU latency. No claim is made for them.
 
