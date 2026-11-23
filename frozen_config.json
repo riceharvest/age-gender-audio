@@ -1,22 +1,32 @@
 {
-  "purpose": "age-gender-audio 0.1.0 release freeze v2 (freeze card). Supersedes v1 (card [internal id], code 9927071), which had no model code. Pins the exact code, head, ONNX artifacts and R4 release-gate list BEFORE any R4 number is read (METHODOLOGY 4).",
-  "version": "0.1.0",
-  "freeze_version": 2,
-  "previous_version": "0.1.0 freeze v1 (superseded, code 9927071, no model code)",
-  "frozen_at": "2026-11-21",
+  "purpose": "age-gender-audio 0.1.1 release freeze (hotfix from released tag v0.1.0). Pins the exact code commit, the head, the ONNX artifacts, the R4 gate list and the scoring/gate flags BEFORE any 0.1.1 held-out number is read (pre-registration rule 4).",
+  "version": "0.1.1",
+  "freeze_version": 3,
+  "previous_version": "0.1.0 freeze v2 (d18b575, code f9d1cd1)",
+  "frozen_at": "2026-11-23",
+  "release_base": {
+    "tag": "v0.1.0",
+    "tag_commit": "0d633f351fffa5444622a885efe5b52aab749a74",
+    "commits_since_tag": [
+      "c5f80be README: install from the GitHub release (not on PyPI for 0.1.0)",
+      "b6da2f8 README: hero chart and real-run clip under the intro, licence table, intended use and privacy",
+      "2899cbf tests: write the synthetic ONNX at IR 10 so py3.10 CI (older onnxruntime) can load it",
+      "55f55ac export: pin transformers>=4.57,<5, assert version at export, re-record reproducible fp32 sha",
+      "566979a release: bump version to 0.1.1"
+    ]
+  },
   "code": {
     "repo": "<repo>",
     "branch": "main",
-    "git_commit": "f9d1cd1bb1e7cab228948f72c0e4c4ca77877939",
-    "git_commit_short": "f9d1cd1",
-    "git_tree": "a9a785108315607728ebc0f1b700208bc299f518",
-    "source_branch": "a feature branch (fast-forwarded into main, local only; no remote)",
-    "freeze_commit_note": "the freeze commit F that adds this file lands on top of f9d1cd1 and changes frozen_config.json only (metadata). Its own hash is recorded on card [internal id] and on gates [internal id], not inside this file.",
-    "clean_tree": "git status --short -> 0 lines before this file was written",
-    "tests_at_freeze": "python -m pytest -q (venv a local venv) -> 18 passed in 7.12s, CPU"
+    "git_commit": "566979a4f2ccb07f81f3d3a2070a6981c6e90712",
+    "git_commit_short": "566979a",
+    "git_tree": "2203b05e425fbf4674da694971067511f5f99ebf",
+    "version_gate": "pyproject.toml:7 version = \"0.1.1\"; age_gender_audio/__init__.py:3 __version__ = \"0.1.1\" (checked at freeze)",
+    "freeze_commit_note": "the freeze commit F that adds this file lands on top of 566979a and changes frozen_config.json only (metadata). Its hash is recorded in the release result, not inside this file.",
+    "clean_tree": "git status --short -> 0 lines at 566979a before this file was written"
   },
   "head": {
-    "name": "R2 seed 0 heads",
+    "name": "R2 seed 0 heads (unchanged since v0.1.0)",
     "file": "age_gender_audio/data/head.npz",
     "sha256": "5bf3380631ee96c5ff53dff656874dd199f8bcd52846ec460b8aa056d636cc5a",
     "derived_from": "R2 head_seed0.pt sha256 cfb79ff2956c0b0639c4a0a1bacc99997a1d8447d00afe3acea82ddcb5923afb",
@@ -25,20 +35,23 @@
   "onnx": {
     "fp32": {
       "path": "<data>/onnx/age_gender_fp32.onnx",
-      "sha256": "d9d7d004142f9f0900d55e78a9e7e16495ab5f3a2c82a120c4c277692888afc8",
-      "bytes": 378448513
+      "sha256": "3a28b86f2c2ab9b7f8d2fe4119722f398b7f6caf76fd8aa420c5a85d372d1bc4",
+      "bytes": 378448514,
+      "historical_v0_1_0_sha256": "d9d7d004142f9f0900d55e78a9e7e16495ab5f3a2c82a120c4c277692888afc8 (transformers 5.5.4, not reproducible under the pinned range; the R4 numbers of 0.1.0 were measured on it)"
     },
     "int8": {
       "path": "<data>/onnx/age_gender_int8.onnx",
       "sha256": "71436e545d79771b386004d2932290a410f77e1f4efca2edc118e3cc079965df",
       "bytes": 209118507,
-      "recipe": "uint8 per-channel dynamic quantization of 60 transformer-layer matmuls; conv front end, fc2 and heads stay fp32"
+      "recipe": "uint8 per-channel dynamic quantization of 60 transformer-layer matmuls; conv front end, fc2 and heads stay fp32",
+      "note": "unchanged from v0.1.0; this is the shipped artifact"
     },
     "export_env": {
-      "torch": "2.6.0+cpu",
-      "transformers": "5.5.4",
+      "torch": "2.15.0+cpu",
+      "transformers": "4.57.6",
       "onnx": "1.23.2",
-      "onnxruntime": "1.32.0"
+      "onnxruntime": "1.32.0",
+      "pin": "transformers>=4.57,<5, asserted at export"
     },
     "export_command": "python -m age_gender_audio.export OUTDIR"
   },
@@ -52,11 +65,11 @@
     "overlap_with_r2_train": 0,
     "overlap_with_r2_screen": 0,
     "seed": 20261124,
-    "audio_dir": "<data>/r4_audio (NNNN.mp3, row order; all 1200 per-clip sha256 match the list's audio_sha256, verified at freeze)",
+    "audio_dir": "<data>/r4_audio (NNNN.mp3, row order; list unchanged since v0.1.0 freeze v2)",
     "draw_report": "r4/r4_draw_report.json"
   },
   "flags": {
-    "held_out_set": "R4 release gate: n=1200 Common Voice 17 English clips, one per client_id, speaker-disjoint from R2 train and screen; list hashed and frozen before the first number.",
+    "held_out_set": "R4 release gate: n=1200 Common Voice 17 English clips, one per client_id, speaker-disjoint from R2 train and screen; same list as 0.1.0 (no redraw for a hotfix).",
     "scoring_rules_pinned": [
       "Gender accuracy = argmax over the {female, male} logits only; the child logit is ignored for BOTH arms.",
       "Age = MAE against decade-bucket midpoints.",
@@ -66,8 +79,13 @@
     ],
     "r4_release_gate": "PASS only if ALL: lower 95% bound of (ours - incumbent) gender accuracy >= -2.0 pp; upper 95% bound of (ours - incumbent) age MAE <= +1.0 yr; int8-vs-fp32 parity |d acc| <= 0.5 pp and |d MAE| <= 0.3 yr on the R4 clips. Else close the line -- no rescue variant, no re-tune-and-rerun.",
     "gate_script": "scripts/gate_r4.py",
-    "gate_recipe": "score_onnx.py (ours), make_audio_npz.py + lab R2 rescore.py (incumbent, Intel XPU), gate_r4.py -- see r4/README.md",
+    "gate_recipe": "score_onnx.py (ours), make_audio_npz.py + the incumbent rescore script (not in this repo; Intel XPU), gate_r4.py -- see r4/README.md",
     "claim_wording": "'level with' only (non-inferiority); report CI bounds; age at decade-bucket resolution; child logit 'not predicted'."
+  },
+  "budget_rule": {
+    "card_budget": "<= 30 agent-minutes, $0 (freeze)",
+    "held_out_touch": "held-out touch budget <= 3 per question (pre-registration rule 6); the R4 list is not re-drawn for 0.1.1, so touches continue from the 0.1.0 count, logged in the release result",
+    "rental": "none for the freeze; R4 gate, if run, uses the local Intel XPU GPU"
   },
   "after_freeze": "No code, head, ONNX, list, scoring or gate change is allowed after this freeze. Any change means a NEW freeze card and a new held-out draw.",
   "out_of_scope": "Any code change after this freeze."
